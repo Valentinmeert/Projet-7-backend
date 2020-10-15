@@ -8,28 +8,11 @@ exports.createPost = async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
   const { userId } = decodedToken;
-  if (req.files) {
-    console.log("path", req.files.file.path);
-    var oldpath = req.files.file.path;
-    var newpath =
-      "/mnt/c/Users/valen/OneDrive/Bureau/P7_Meert_Valentin/backend/images/" +
-      req.files.file.name;
-    fs.renameSync(oldpath, newpath);
-    /*     var oldpath = req.files.filetoupload.path;
-    var newpath = "C:/Users/Your Name/" + files.filetoupload.name;
-    fs.rename(oldpath, newpath, function (err) {
-      if (err) throw err;
-      res.write("File uploaded and moved!");
-      res.end();
-    }); */
-  }
   const post = new Post({
     userId,
-    title: req.fields.title,
-    content: req.fields.content,
-    imageUrl: `${req.protocol}://${req.get("host")}/images/${
-      req.files.file.name
-    }`,
+    title: req.body.title,
+    content: req.body.content,
+    imageUrl,
   });
   post
     .save()

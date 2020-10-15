@@ -1,7 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
-const formidableMiddleware = require("express-formidable");
 const app = express();
 const userRoutes = require("./routes/users");
 const userPosts = require("./routes/posts");
@@ -21,7 +20,6 @@ app.use((req, res, next) => {
 });
 
 app.use(bodyParser.json());
-app.use(formidableMiddleware());
 app.use("/userImg", express.static(path.join(__dirname, "userImg")));
 
 app.use("/api/v1/user", userRoutes);
