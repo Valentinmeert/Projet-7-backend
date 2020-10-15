@@ -77,9 +77,16 @@ exports.deletePost = (req, res) => {
 };
 
 exports.getUserIdWithPost = (req, res) => {
-  sequelize
-    .query("SELECT *  FROM users INNER JOIN posts ON users.id = posts.userId")
-    .then((res) => {
-      console.log(res);
-    });
+  Post.findOne({ where: { id: req.params.postId } }).then((post) => {
+    if (post) {
+      userId = post.userId;
+      console.log("POST ID", userId);
+      User.findOne().then((user) => {
+        console.log("USER NAME", user.firstName, user.lastName);
+        res.status(200).send(user);
+      });
+    } else {
+      res.status(404).json({ error: "Post not found" });
+    }
+  });
 };
