@@ -1,0 +1,262 @@
+GET    | /api/v1/user
+-------------------------
+no body
+-------------------------
+[
+    {
+        userId: Number,
+        firstName: String,
+        lastName: String,
+        password: String,
+        createdAt: Date,
+        updatedAt: Date,
+    },
+    ...
+]
+-------------------------
+
+
+POST   | /api/v1/user
+-------------------------
+{
+    firstName: String,
+    lastName: String,
+    password: String,
+}
+-------------------------
+{
+    userId: Number,
+    firstName: String,
+    lastName: String,
+    password: String,
+    createdAt: Date,
+    updatedAt: Date,
+}
+-------------------------
+
+
+GET    | /api/v1/user/:userId
+-------------------------
+no body
+-------------------------
+{
+    userId: Number,
+    firstName: String,
+    lastName: String,
+    password: String,
+    createdAt: Date,
+    updatedAt: Date,
+}
+-------------------------
+
+
+PUT    | /api/v1/user/:userId
+-------------------------
+{
+    firstName: String,
+    lastName: String,
+    password: String,
+}
+-------------------------
+{
+    userId: Number,
+    firstName: String,
+    lastName: String,
+    password: String,
+    createdAt: Date,
+    updatedAt: Date,
+}
+-------------------------
+
+
+DELETE | /api/v1/user/:userId
+-------------------------
+no body
+-------------------------
+{
+    userId: Number
+}
+-------------------------
+
+
+GET    | /api/v1/post/root
+-------------------------
+no body
+-------------------------
+[
+    {
+        postId: Number,
+        rootPostId: Number,
+        userId: Number,
+        title: String,
+        content: String,
+        createdAt: Date,
+        updatedAt: Date,
+    },
+    ...
+]
+-------------------------
+
+
+GET    | /api/v1/post/response
+-------------------------
+no body
+-------------------------
+[
+    {
+        postId: Number,
+        rootPostId: Number,
+        userId: Number,
+        title: String,
+        content: String,
+        createdAt: Date,
+        updatedAt: Date,
+    },
+    ...
+]
+-------------------------
+
+
+POST   | /api/v1/post
+-------------------------
+{
+    rootPostId: Number,
+    title: String,
+    content: String,
+}
+-------------------------
+{
+    postId: Number,
+    rootPostId: Number,
+    userId: Number,
+    title: String,
+    content: String,
+    createdAt: Date,
+    updatedAt: Date,
+}
+-------------------------
+
+
+GET    | /api/v1/post/:postId
+-------------------------
+no body
+-------------------------
+{
+    postId: Number,
+    rootPostId: Number,
+    userId: Number,
+    title: String,
+    content: String,
+    createdAt: Date,
+    updatedAt: Date,
+}
+-------------------------
+
+
+PUT    | /api/v1/post/:postId
+-------------------------
+{
+    rootPostId: Number,
+    title: String,
+    content: String,
+}
+-------------------------
+{
+    postId: Number,
+    rootPostId: Number,
+    userId: Number,
+    title: String,
+    content: String,
+    createdAt: Date,
+    updatedAt: Date,
+}
+-------------------------
+
+
+DELETE | /api/v1/post/:postId
+-------------------------
+no body
+-------------------------
+{
+    postId: Number,
+}
+-------------------------
+
+
+GET    | /api/v1/post/:postId/react
+-------------------------
+no body
+-------------------------
+[
+    {
+        reactId: Number,
+        postId: Number,
+        userId: Number,
+        type: String,
+        createdAt: Date,
+        updatedAt: Date,
+    },
+    ...
+]
+-------------------------
+
+
+POST   | /api/v1/post/:postId/react
+-------------------------
+{
+    type: String,
+}
+-------------------------
+{
+    reactId: Number,
+    postId: Number,
+    userId: Number,
+    type: String,
+    createdAt: Date,
+    updatedAt: Date,
+}
+-------------------------
+
+
+GET    | /api/v1/post/:postId/react/:reactId
+-------------------------
+no body
+-------------------------
+{
+    reactId: Number,
+    postId: Number,
+    userId: Number,
+    type: String,
+    createdAt: Date,
+    updatedAt: Date,
+}
+-------------------------
+
+
+PUT    | /api/v1/post/:postId/react/:reactId
+-------------------------
+{
+    type: String,
+}
+-------------------------
+{
+    reactId: Number,
+    postId: Number,
+    userId: Number,
+    type: String,
+    createdAt: Date,
+    updatedAt: Date,
+}
+-------------------------
+
+
+DELETE | /api/v1/post/:postId/react/:reactId
+-------------------------
+no body
+-------------------------
+{
+    reactId: Number,
+}
+------------------------
+
+
