@@ -12,7 +12,9 @@ exports.createPost = async (req, res) => {
     userId,
     title: req.body.title,
     content: req.body.content,
-    imageUrl,
+    /*     imageUrl: `${req.protocol}://${req.get("host")}/images/${
+      req.file.filename
+    }`, */
   });
   post
     .save()
