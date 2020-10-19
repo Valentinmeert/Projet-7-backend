@@ -4,7 +4,8 @@ const User = require("../helpers/users");
 const { sequelize } = require("../models");
 var fs = require("fs");
 
-exports.createPost = async (req, res) => {
+exports.createPost = (req, res) => {
+  console.log(req.file);
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
   const { userId } = decodedToken;
@@ -12,9 +13,9 @@ exports.createPost = async (req, res) => {
     userId,
     title: req.body.title,
     content: req.body.content,
-    /*     imageUrl: `${req.protocol}://${req.get("host")}/images/${
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${
       req.file.filename
-    }`, */
+    }`,
   });
   post
     .save()
