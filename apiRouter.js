@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 });
 
 app.use(bodyParser.json());
-app.use("/userImg", express.static(path.join(__dirname, "userImg")));
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/post", userPosts);

@@ -5,7 +5,6 @@ const { sequelize } = require("../models");
 var fs = require("fs");
 
 exports.createPost = (req, res) => {
-  console.log(req.file);
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
   const { userId } = decodedToken;
@@ -35,7 +34,7 @@ exports.getOnePost = (req, res) => {
   Post.findOne({ where: { id: req.params.postId } })
     .then((post) => {
       if (post) {
-        console.log(post.userId);
+        console.log(post);
         res.status(200).send(post);
       } else {
         res.status(404).json({ error: "Post not found" });
@@ -55,9 +54,14 @@ exports.modifyPost = async (req, res) => {
 };
 
 exports.deletePost = (req, res) => {
-  Post.destroy({ where: { id: req.params.id } })
-    .then(() => {
-      res.status(200).json({ message: "Post supprimé !" });
+  Post.findAll({ where: { postId: req.params.id } })
+    .then((post) => {
+      const filename = post[0].imageUrl.split("/images/")[1];
+      fs.unlink(`images/${filename}`, () => {
+        Post.destroy({ where: { id: req.params.id } })
+          .then(() => res.status(200).json({ message: "Post supprimé !" }))
+          .catch((error) => res.status(400).json({ error }));
+      });
     })
     .catch((error) => res.status(400).json({ error }));
 };

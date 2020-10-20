@@ -12,6 +12,7 @@ module.exports = (sequelize) => {
     {
       title: DataTypes.STRING,
       content: DataTypes.STRING,
+      imageUrl: DataTypes.STRING,
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
       userId: DataTypes.INTEGER,

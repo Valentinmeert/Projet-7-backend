@@ -1,6 +1,6 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('posts', {
+    await queryInterface.createTable("posts", {
       /* rootPostId: {
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -24,7 +24,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       imageUrl: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.STRING,
       },
       createdAt: {
@@ -39,13 +39,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'users',
-          key: 'id',
+          model: "users",
+          key: "id",
         },
       },
     });
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('posts');
+    await queryInterface.dropTable("posts");
   },
 };
