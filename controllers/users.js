@@ -29,7 +29,6 @@ exports.signup = (req, res) => {
 };
 
 exports.login = (req, res) => {
-  console.log("backend");
   User.findOne({ where: { email: req.body.email } })
     .then((user) => {
       if (!user) {
@@ -67,7 +66,6 @@ exports.getAllUsers = (req, res) => {
 };
 
 exports.getOneUser = (req, res) => {
-  console.log(req.params.userId);
   User.findOne({
     attributes: [
       "id",
@@ -101,11 +99,9 @@ exports.modifyUser = async (req, res) => {
 };
 
 exports.deleteUser = (req, res) => {
-  Post.findAll({ where: { id: req.params.userId } })
-    .then((post) => {
-      console.log(post);
-    })
-    .catch((error) => res.status(400).json({ error: "Post not found" }));
+  User.destroy({ where: { userId: req.params.id } })
+    .then(() => res.status(200).json({ message: "Utilisateur supprimé" }))
+    .catch((error) => res.status(400).json({ error }));
 };
 
 exports.getPostsWithUserId = (req, res) => {

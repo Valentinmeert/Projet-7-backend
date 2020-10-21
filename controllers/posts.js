@@ -54,25 +54,23 @@ exports.modifyPost = async (req, res) => {
 };
 
 exports.deletePost = (req, res) => {
-  Post.findAll({ where: { postId: req.params.id } })
+  /* Post.findOne({ where: { postId: req.params.id } })
     .then((post) => {
       const filename = post[0].imageUrl.split("/images/")[1];
-      fs.unlink(`images/${filename}`, () => {
-        Post.destroy({ where: { id: req.params.id } })
-          .then(() => res.status(200).json({ message: "Post supprimé !" }))
-          .catch((error) => res.status(400).json({ error }));
-      });
-    })
+      fs.unlink(`images/${filename}`, () => { */
+  Post.destroy({ where: { id: req.params.id } })
+    .then(() => res.status(200).json({ message: "Post supprimé !" }))
     .catch((error) => res.status(400).json({ error }));
+  /* });
+    })
+    .catch((error) => res.status(400).json({ error })); */
 };
 
 exports.getUserIdWithPost = (req, res) => {
   Post.findOne({ where: { id: req.params.postId } }).then((post) => {
     if (post) {
       userId = post.userId;
-      console.log("POST ID", userId);
       User.findOne().then((user) => {
-        console.log("USER NAME", user.firstName, user.lastName);
         res.status(200).send(user);
       });
     } else {
