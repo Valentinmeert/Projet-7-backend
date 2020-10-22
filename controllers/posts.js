@@ -8,18 +8,30 @@ exports.createPost = (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
   const { userId } = decodedToken;
-  const post = new Post({
-    userId,
-    title: req.body.title,
-    content: req.body.content,
-    imageUrl: `${req.protocol}://${req.get("host")}/images/${
-      req.file.filename
-    }`,
-  });
-  post
-    .save()
-    .then(() => res.status(201).json({ message: "Post enregistrée" }))
-    .catch((error) => res.status(400).json({ error }));
+  if (req.file) {
+    const post = new Post({
+      userId,
+      title: req.body.title,
+      content: req.body.content,
+      imageUrl: `${req.protocol}://${req.get("host")}/images/${
+        req.file.filename
+      }`,
+    });
+    post
+      .save()
+      .then(() => res.status(201).json({ message: "Post enregistrée" }))
+      .catch((error) => res.status(400).json({ error }));
+  } else {
+    const post = new Post({
+      userId,
+      title: req.body.title,
+      content: req.body.content,
+    });
+    post
+      .save()
+      .then(() => res.status(201).json({ message: "Post enregistrée" }))
+      .catch((error) => res.status(400).json({ error }));
+  }
 };
 
 exports.getAllPosts = (req, res) => {
