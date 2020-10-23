@@ -99,7 +99,7 @@ exports.modifyUser = async (req, res) => {
 };
 
 exports.deleteUser = (req, res) => {
-  User.destroy({ where: { userId: req.params.id } })
+  User.destroy({ where: { id: req.params.userId } })
     .then(() => res.status(200).json({ message: "Utilisateur supprimé" }))
     .catch((error) => res.status(400).json({ error }));
 };
