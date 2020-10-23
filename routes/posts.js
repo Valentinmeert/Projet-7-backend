@@ -9,7 +9,7 @@ router.post("/", auth, multer, postCtrl.createPost);
 router.get("/root", postCtrl.getAllPosts);
 router.get("/:postId", postCtrl.getOnePost);
 router.delete("/:id", postCtrl.deletePost);
-router.put("/:id", postCtrl.modifyPost);
+router.put("/:id", auth, multer, postCtrl.modifyPost);
 router.get("/root/:postId", postCtrl.getUserIdWithPost);
 
 module.exports = router;

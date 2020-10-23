@@ -2,7 +2,6 @@ const React = require("../helpers/reacts");
 const jwt = require("jsonwebtoken");
 
 exports.createReact = async (req, res) => {
-  console.log(req.body);
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
   const { userId } = decodedToken;
