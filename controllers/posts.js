@@ -3,6 +3,7 @@ const Post = require("../helpers/posts");
 const User = require("../helpers/users");
 const { sequelize } = require("../models");
 var fs = require("fs");
+const { rejects } = require("assert");
 
 exports.createPost = (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
@@ -66,16 +67,41 @@ exports.modifyPost = async (req, res) => {
 };
 
 exports.deletePost = (req, res) => {
-  /* Post.findOne({ where: { postId: req.params.id } })
-    .then((post) => {
-      const filename = post[0].imageUrl.split("/images/")[1];
-      fs.unlink(`images/${filename}`, () => { */
-  Post.destroy({ where: { id: req.params.id } })
+  this.deletePostById(req.params.id)
     .then(() => res.status(200).json({ message: "Post supprimé !" }))
-    .catch((error) => res.status(400).json({ error }));
-  /* });
-    })
-    .catch((error) => res.status(400).json({ error })); */
+    .catch((error) => {
+      res.status(400).json({ error });
+    });
+};
+
+exports.deletePostById = (id) => {
+  return new Promise((resolve, reject) => {
+    Post.findOne({ where: { id } }).then((post) => {
+      const filename = post.imageUrl.split("/images/")[1];
+      fs.unlink(`images/${filename}`, () => {
+        /* ReactsController.deleteReactByPostId(id); */
+        Post.destroy({ where: { id } })
+          .then(() => {
+            resolve();
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+    });
+  });
+};
+
+exports.deletePostsByUserId = (userId) => {
+  return new Promise((resolve) => {
+    Post.findAll({ where: { userId } }).then(async (posts) => {
+      for (let i = 0; i < posts.length; i += 1) {
+        const post = posts[i];
+        await this.deletePostById(post.id);
+      }
+      resolve();
+    });
+  });
 };
 
 exports.getUserIdWithPost = (req, res) => {

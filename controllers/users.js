@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../helpers/users");
 const Post = require("../helpers/posts");
+const PostsController = require("./posts");
 
 exports.signup = (req, res) => {
   bcrypt
@@ -98,7 +99,13 @@ exports.modifyUser = async (req, res) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-exports.deleteUser = (req, res) => {
+exports.deleteUser = async (req, res) => {
+  /* Post.findAll({ where: { userId: req.params.userId } }).then((posts) => {
+    for (let x = 0; x < posts.length; x++) {
+      Post.destroy({ where: { id: posts[x].id } });
+    }
+  }); */
+  await PostsController.deletePostsByUserId(req.params.userId);
   User.destroy({ where: { id: req.params.userId } })
     .then(() => res.status(200).json({ message: "Utilisateur supprimé" }))
     .catch((error) => res.status(400).json({ error }));
