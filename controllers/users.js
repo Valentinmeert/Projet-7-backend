@@ -100,11 +100,6 @@ exports.modifyUser = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
-  /* Post.findAll({ where: { userId: req.params.userId } }).then((posts) => {
-    for (let x = 0; x < posts.length; x++) {
-      Post.destroy({ where: { id: posts[x].id } });
-    }
-  }); */
   await PostsController.deletePostsByUserId(req.params.userId);
   User.destroy({ where: { id: req.params.userId } })
     .then(() => res.status(200).json({ message: "Utilisateur supprimé" }))

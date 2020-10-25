@@ -53,3 +53,30 @@ exports.deleteReact = (req, res) => {
     })
     .catch((error) => res.status(400).json({ error }));
 };
+
+exports.deleteReactById = (id) => {
+  return new Promise((resolve, reject) => {
+    React.findOne({ where: { id } }).then((react) => {
+      React.destroy({ where: { id } })
+        .then(() => {
+          resolve();
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  });
+};
+
+exports.deleteReactByPostId = (postId) => {
+  return new Promise((resolve) => {
+    console.log("test");
+    React.findAll({ where: { postId } }).then(async (reacts) => {
+      for (let i = 0; i < reacts.length; i += 1) {
+        const react = reacts[i];
+        await this.deleteReactById(react.id);
+      }
+      resolve();
+    });
+  });
+};

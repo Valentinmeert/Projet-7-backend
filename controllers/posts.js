@@ -4,6 +4,7 @@ const User = require("../helpers/users");
 const { sequelize } = require("../models");
 var fs = require("fs");
 const { rejects } = require("assert");
+const ReactsController = require("./reacts");
 
 exports.createPost = (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
@@ -77,9 +78,8 @@ exports.deletePost = (req, res) => {
 exports.deletePostById = (id) => {
   return new Promise((resolve, reject) => {
     Post.findOne({ where: { id } }).then((post) => {
-      const filename = post.imageUrl.split("/images/")[1];
-      fs.unlink(`images/${filename}`, () => {
-        /* ReactsController.deleteReactByPostId(id); */
+      console.log(post.imageUrl);
+      if (post.imageUrl == null) {
         Post.destroy({ where: { id } })
           .then(() => {
             resolve();
@@ -87,7 +87,19 @@ exports.deletePostById = (id) => {
           .catch((error) => {
             reject(error);
           });
-      });
+      } else {
+        const filename = post.imageUrl.split("/images/")[1];
+        fs.unlink(`images/${filename}`, async () => {
+          await ReactsController.deleteReactByPostId(id);
+          Post.destroy({ where: { id } })
+            .then(() => {
+              resolve();
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        });
+      }
     });
   });
 };
