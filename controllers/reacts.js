@@ -70,7 +70,6 @@ exports.deleteReactById = (id) => {
 
 exports.deleteReactByPostId = (postId) => {
   return new Promise((resolve) => {
-    console.log("test");
     React.findAll({ where: { postId } }).then(async (reacts) => {
       for (let i = 0; i < reacts.length; i += 1) {
         const react = reacts[i];

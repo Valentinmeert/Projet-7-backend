@@ -22,7 +22,9 @@ exports.createPost = (req, res) => {
     post
       .save()
       .then(() => res.status(201).json({ message: "Post enregistrée" }))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => {
+        res.status(400).json({ error });
+      });
   } else {
     const post = new Post({
       userId,
@@ -32,7 +34,9 @@ exports.createPost = (req, res) => {
     post
       .save()
       .then(() => res.status(201).json({ message: "Post enregistrée" }))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => {
+        res.status(400).json({ error });
+      });
   }
 };
 
@@ -48,7 +52,6 @@ exports.getOnePost = (req, res) => {
   Post.findOne({ where: { id: req.params.postId } })
     .then((post) => {
       if (post) {
-        console.log(post);
         res.status(200).send(post);
       } else {
         res.status(404).json({ error: "Post not found" });
@@ -78,7 +81,6 @@ exports.deletePost = (req, res) => {
 exports.deletePostById = (id) => {
   return new Promise((resolve, reject) => {
     Post.findOne({ where: { id } }).then((post) => {
-      console.log(post.imageUrl);
       if (post.imageUrl == null) {
         Post.destroy({ where: { id } })
           .then(() => {
@@ -119,8 +121,9 @@ exports.deletePostsByUserId = (userId) => {
 exports.getUserIdWithPost = (req, res) => {
   Post.findOne({ where: { id: req.params.postId } }).then((post) => {
     if (post) {
+      console.log(post.userId);
       userId = post.userId;
-      User.findOne().then((user) => {
+      User.findOne({ where: { id: userId } }).then((user) => {
         res.status(200).send(user);
       });
     } else {
