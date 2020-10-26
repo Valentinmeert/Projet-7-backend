@@ -13,5 +13,4 @@ router.put("/:userId", auth, userCtrl.modifyUser);
 router.delete("/:userId", auth, userCtrl.deleteUser);
 router.get("/:userId/post", auth, userCtrl.getPostsWithUserId);
 router.put("/:userId/password", auth, userCtrl.modifyUserPassword);
-/* router.post("/", auth, userCtrl.createUser); */
 module.exports = router;
