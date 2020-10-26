@@ -19,7 +19,7 @@ exports.signup = (req, res) => {
         .then(() =>
           res.status(201).json({
             userId: user.id,
-            token: jwt.sign({ userId: user.id }, "RANDOM_TOKEN_SECRET", {
+            token: jwt.sign({ userId: user.id }, process.env.SECRET_KEY, {
               expiresIn: "24h",
             }),
           })
