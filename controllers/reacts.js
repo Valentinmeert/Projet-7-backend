@@ -1,13 +1,13 @@
-const React = require("../helpers/reacts");
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
+const React = require('../helpers/reacts');
 
 exports.createReact = async (req, res) => {
-  const token = req.headers.authorization.split(" ")[1];
+  const token = req.headers.authorization.split(' ')[1];
   const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
   const { userId } = decodedToken;
   const react = new React({
     userId,
-    type: "like",
+    type: 'like',
     postId: req.params.postId,
   });
   react
@@ -30,7 +30,7 @@ exports.getOneReact = (req, res) => {
       if (react) {
         res.status(200).send(react);
       } else {
-        res.status(404).json({ error: "React not found" });
+        res.status(404).json({ error: 'React not found' });
       }
     })
     .catch((error) => {
@@ -41,7 +41,7 @@ exports.getOneReact = (req, res) => {
 exports.modifyReact = async (req, res) => {
   React.update({ ...req.body }, { where: { id: req.params.reactId } })
     .then(() => {
-      res.status(201).json({ message: "React modifié !" });
+      res.status(201).json({ message: 'React modifié !' });
     })
     .catch((error) => res.status(400).json({ error }));
 };
@@ -49,13 +49,13 @@ exports.modifyReact = async (req, res) => {
 exports.deleteReact = (req, res) => {
   React.destroy({ where: { id: req.params.reactId } })
     .then(() => {
-      res.status(200).json({ message: "React supprimé !" });
+      res.status(200).json({ message: 'React supprimé !' });
     })
     .catch((error) => res.status(400).json({ error }));
 };
 
-exports.deleteReactById = (id) => {
-  return new Promise((resolve, reject) => {
+exports.deleteReactById = (id) =>
+  new Promise((resolve, reject) => {
     React.findOne({ where: { id } }).then((react) => {
       React.destroy({ where: { id } })
         .then(() => {
@@ -66,10 +66,9 @@ exports.deleteReactById = (id) => {
         });
     });
   });
-};
 
-exports.deleteReactByPostId = (postId) => {
-  return new Promise((resolve) => {
+exports.deleteReactByPostId = (postId) =>
+  new Promise((resolve) => {
     React.findAll({ where: { postId } }).then(async (reacts) => {
       for (let i = 0; i < reacts.length; i += 1) {
         const react = reacts[i];
@@ -78,4 +77,3 @@ exports.deleteReactByPostId = (postId) => {
       resolve();
     });
   });
-};

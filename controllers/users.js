@@ -1,8 +1,8 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const User = require("../helpers/users");
-const Post = require("../helpers/posts");
-const PostsController = require("./posts");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../helpers/users');
+const Post = require('../helpers/posts');
+const PostsController = require('./posts');
 
 exports.signup = (req, res) => {
   bcrypt
@@ -20,7 +20,7 @@ exports.signup = (req, res) => {
           res.status(201).json({
             userId: user.id,
             token: jwt.sign({ userId: user.id }, process.env.SECRET_KEY, {
-              expiresIn: "24h",
+              expiresIn: '24h',
             }),
           })
         )
@@ -33,21 +33,21 @@ exports.login = (req, res) => {
   User.findOne({ where: { email: req.body.email } })
     .then((user) => {
       if (!user) {
-        return res.status(404).json({ error: "Utilisateur non trouvé !" });
+        return res.status(404).json({ error: 'Utilisateur non trouvé !' });
       }
 
       bcrypt
         .compare(req.body.password, user.password)
         .then((valid) => {
           if (!valid) {
-            return res.status(401).json({ error: "Mot de passe incorrect !" });
+            return res.status(401).json({ error: 'Mot de passe incorrect !' });
           }
           res.status(200).json({
             userId: user.id,
             firstName: user.firstName,
             lastName: user.lastName,
             token: jwt.sign({ userId: user.id }, process.env.SECRET_KEY, {
-              expiresIn: "24h",
+              expiresIn: '24h',
             }),
           });
         })
@@ -69,13 +69,13 @@ exports.getAllUsers = (req, res) => {
 exports.getOneUser = (req, res) => {
   User.findOne({
     attributes: [
-      "id",
-      "firstName",
-      "lastName",
-      "email",
-      "password",
-      "createdAt",
-      "updatedAt",
+      'id',
+      'firstName',
+      'lastName',
+      'email',
+      'password',
+      'createdAt',
+      'updatedAt',
     ],
     where: { id: req.params.userId },
   })
@@ -83,7 +83,7 @@ exports.getOneUser = (req, res) => {
       if (user) {
         res.status(200).send(user);
       } else {
-        res.status(404).json({ error: "User not found" });
+        res.status(404).json({ error: 'User not found' });
       }
     })
     .catch((error) => {
@@ -94,7 +94,7 @@ exports.getOneUser = (req, res) => {
 exports.modifyUser = async (req, res) => {
   User.update({ ...req.body }, { where: { id: req.params.userId } })
     .then(() => {
-      res.status(201).json({ message: "Profil modifié !" });
+      res.status(201).json({ message: 'Profil modifié !' });
     })
     .catch((error) => res.status(400).json({ error }));
 };
@@ -102,7 +102,7 @@ exports.modifyUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   await PostsController.deletePostsByUserId(req.params.userId);
   User.destroy({ where: { id: req.params.userId } })
-    .then(() => res.status(200).json({ message: "Utilisateur supprimé" }))
+    .then(() => res.status(200).json({ message: 'Utilisateur supprimé' }))
     .catch((error) => res.status(400).json({ error }));
 };
 
@@ -124,7 +124,7 @@ exports.modifyUserPassword = (req, res) => {
       ).catch((error) => res.status(400).json({ error }));
     })
     .then(() => {
-      res.status(200).json({ message: "Mot de Passe modifié " });
+      res.status(200).json({ message: 'Mot de Passe modifié ' });
     })
     .catch((error) => res.status(400).json({ error }));
 };

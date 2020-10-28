@@ -1,9 +1,10 @@
-const { Model, DataTypes } = require("sequelize");
+const { Model, DataTypes } = require('sequelize');
+
 module.exports = (sequelize) => {
   class reacts extends Model {
     static associate(models) {
       models.reacts.belongsTo(models.posts, {
-        foreignKey: "postId",
+        foreignKey: 'postId',
       });
     }
   }
@@ -17,7 +18,7 @@ module.exports = (sequelize) => {
     },
     {
       sequelize,
-      modelName: "reacts",
+      modelName: 'reacts',
     }
   );
   return reacts;
