@@ -5,16 +5,16 @@ module.exports = {
     es6: true,
   },
   parserOptions: {
-    parser: "babel-eslint",
+    parser: 'babel-eslint',
   },
-  extends: ["airbnb-base"],
-  plugins: ["prettier"],
+  extends: ['airbnb-base'],
+  plugins: ['prettier'],
   settings: {
-    "import/resolver": {
+    'import/resolver': {
       alias: {
         map: [
-          ["~", "."],
-          ["@", "."],
+          ['~', '.'],
+          ['@', '.'],
         ],
       },
     },
