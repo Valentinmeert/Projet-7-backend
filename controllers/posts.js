@@ -132,11 +132,11 @@ exports.deletePostsByUserId = (userId) =>
   });
 
 exports.getUserIdWithPost = (req, res) => {
-  if (!req.params.id) {
+  /* if (!req.params.id) {
     return res
       .status(400)
       .json({ error: 'Sent data does not match requirements' });
-  }
+  } */
   Post.findOne({ where: { id: req.params.postId } }).then((post) => {
     if (post) {
       console.log(post.userId);

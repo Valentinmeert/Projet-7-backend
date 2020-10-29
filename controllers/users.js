@@ -109,18 +109,11 @@ exports.modifyUser = async (req, res) => {
   if (
     !req.body.firstName ||
     !req.body.lastName ||
-    !this.validateEmail(req.body.email) ||
-    !this.validatePassword(req.body.password)
+    !this.validateEmail(req.body.email)
   ) {
     return res
       .status(400)
       .json({ error: 'Sent data does not match requirements' });
-  }
-  const existingUser = await this.findUserByEmail(req.body.email);
-  if (existingUser) {
-    return res
-      .status(409)
-      .json({ error: 'A user already exist with given email address' });
   }
   User.findOne({ where: { id: req.params.userId } })
     .then(() => {
@@ -130,8 +123,8 @@ exports.modifyUser = async (req, res) => {
         })
         .catch((error) =>
           res
-            .status(400)
-            .json({ error: 'Sent data does not match requirements' })
+            .status(409)
+            .json({ error: 'A user already exist with given email address' })
         );
     })
     .catch((error) => res.status(404).json({ error: 'no user match this id' }));
