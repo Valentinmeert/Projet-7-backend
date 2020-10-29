@@ -7,7 +7,7 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint',
   },
-  extends: ['airbnb-base'],
+  extends: ['airbnb-base', 'prettier'],
   plugins: ['prettier'],
   settings: {
     'import/resolver': {

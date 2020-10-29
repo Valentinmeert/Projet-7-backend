@@ -2,6 +2,11 @@ const jwt = require('jsonwebtoken');
 const React = require('../helpers/reacts');
 
 exports.createReact = async (req, res) => {
+  if (!req.body.type) {
+    return res
+      .status(400)
+      .json({ error: 'Sent data does not match requirements' });
+  }
   const token = req.headers.authorization.split(' ')[1];
   const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
   const { userId } = decodedToken;
@@ -19,9 +24,13 @@ exports.createReact = async (req, res) => {
 exports.getAllReacts = (req, res) => {
   React.findAll({ where: { postId: req.params.postId } })
     .then((react) => {
-      res.status(200).send(react);
+      if (react) {
+        res.status(200).send(react);
+      } else {
+        res.status(404).json({ error: 'React not found' });
+      }
     })
-    .catch((error) => res.status(400).json({ error }));
+    .catch((error) => res.status(404).json({ error }));
 };
 
 exports.getOneReact = (req, res) => {

@@ -7,6 +7,11 @@ const { sequelize } = require('../models');
 const ReactsController = require('./reacts');
 
 exports.createPost = (req, res) => {
+  if (!req.body.title || !req.body.content) {
+    return res
+      .status(400)
+      .json({ error: 'Sent data does not match requirements' });
+  }
   const token = req.headers.authorization.split(' ')[1];
   const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
   const { userId } = decodedToken;
@@ -23,7 +28,7 @@ exports.createPost = (req, res) => {
       .save()
       .then(() => res.status(201).json({ message: 'Post enregistrée' }))
       .catch((error) => {
-        res.status(400).json({ error });
+        res.status(404).json({ error });
       });
   } else {
     const post = new Post({
@@ -35,7 +40,7 @@ exports.createPost = (req, res) => {
       .save()
       .then(() => res.status(201).json({ message: 'Post enregistrée' }))
       .catch((error) => {
-        res.status(400).json({ error });
+        res.status(404).json({ error });
       });
   }
 };
@@ -63,14 +68,24 @@ exports.getOnePost = (req, res) => {
 };
 
 exports.modifyPost = async (req, res) => {
+  if (!req.body.title || !req.body.content) {
+    return res
+      .status(400)
+      .json({ error: 'Sent data does not match requirements' });
+  }
   Post.update({ ...req.body }, { where: { id: req.params.id } })
     .then(() => {
       res.status(201).json({ message: 'Post modifié !' });
     })
-    .catch((error) => res.status(400).json({ error }));
+    .catch((error) => res.status(404).json({ error }));
 };
 
 exports.deletePost = (req, res) => {
+  if (!req.params.id) {
+    return res
+      .status(400)
+      .json({ error: 'Sent data does not match requirements' });
+  }
   this.deletePostById(req.params.id)
     .then(() => res.status(200).json({ message: 'Post supprimé !' }))
     .catch((error) => {
@@ -117,6 +132,11 @@ exports.deletePostsByUserId = (userId) =>
   });
 
 exports.getUserIdWithPost = (req, res) => {
+  if (!req.params.id) {
+    return res
+      .status(400)
+      .json({ error: 'Sent data does not match requirements' });
+  }
   Post.findOne({ where: { id: req.params.postId } }).then((post) => {
     if (post) {
       console.log(post.userId);
